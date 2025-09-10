@@ -33,3 +33,12 @@ public class AESExample {
         sc.close();
     }
 }
+
+
+OUTPUT:
+
+Enter message: HELLO
+Enter 16-character key: 1234567890123456
+Original    : HELLO
+Encrypted   : C0TJhqOGb9WrwL526FH8aQ==
+Decrypted   : HELLO
