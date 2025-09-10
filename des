@@ -1,0 +1,42 @@
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.*;
+
+public class DESExample {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter message: ");
+        String text = sc.nextLine();
+        System.out.print("Enter 8-character key: ");
+        String key = sc.nextLine();
+
+        if (key.length() != 8) {
+            System.out.println("Error: Key must be exactly 8 characters!");
+            return;
+        }
+
+        SecretKey secretKey = new SecretKeySpec(key.getBytes(), "DES");
+        Cipher cipher = Cipher.getInstance("DES");
+        
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encry = cipher.doFinal(text.getBytes());
+        String encText = Base64.getEncoder().encodeToString(encry);
+        
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        String decText = new String(cipher.doFinal(encry));
+        
+        System.out.println("Original    : " + text);
+        System.out.println("Encrypted   : " + encText);
+        System.out.println("Decrypted   : " + decText);
+        
+        sc.close();
+    }
+}
+
+OUTPUT:
+
+Enter message: HELLO
+Enter 8-character key: 12345678
+Original    : HELLO
+Encrypted   : i2oUQS3liQM=
+Decrypted   : HELLO
