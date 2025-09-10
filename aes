@@ -5,34 +5,27 @@ import java.util.*;
 public class AESExample {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
-
-        // 🔑 Get message and key from user
         System.out.print("Enter message: ");
         String text = sc.nextLine();
 
         System.out.print("Enter 16-character key: ");
         String key = sc.nextLine();
 
-        // ✅ Validate key length
         if (key.length() != 16) {
             System.out.println("Error: Key must be exactly 16 characters!");
             return;
         }
 
-        // 🔐 Setup AES cipher
         SecretKey secretKey = new SecretKeySpec(key.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
-        
-                // Encrypt
+
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] encry = cipher.doFinal(text.getBytes());
         String encText = Base64.getEncoder().encodeToString(encry);
         
-        // Decrypt
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         String decText = new String(cipher.doFinal(encry));
         
-        // Output
         System.out.println("Original    : " + text);
         System.out.println("Encrypted   : " + encText);
         System.out.println("Decrypted   : " + decText);
