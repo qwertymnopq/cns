@@ -1,0 +1,39 @@
+public class HillCipher {
+    public static void main(String[] args) {
+        int[][] key = {{3, 3}, {2, 5}};
+        int[][] invKey = {{15, 17}, {20, 9}}; // Inverse of key mod 26
+
+        String msg = "CRYPTOGRAPHY"; // Must be even length
+        if (msg.length() % 2 != 0) {
+            System.out.println("Error: Message length must be even!");
+            return;
+        }
+
+        String enc = "";
+        for (int i = 0; i < msg.length(); i += 2) {
+            int a = msg.charAt(i) - 'A';
+            int b = msg.charAt(i + 1) - 'A';
+            enc += (char) ((key[0][0] * a + key[0][1] * b) % 26 + 'A');
+            enc += (char) ((key[1][0] * a + key[1][1] * b) % 26 + 'A');
+        }
+
+        String dec = "";
+        for (int i = 0; i < enc.length(); i += 2) {
+            int a = enc.charAt(i) - 'A';
+            int b = enc.charAt(i + 1) - 'A';
+            dec += (char) ((invKey[0][0] * a + invKey[0][1] * b) % 26 + 'A');
+            dec += (char) ((invKey[1][0] * a + invKey[1][1] * b) % 26 + 'A');
+        }
+
+        System.out.println("Original  : " + msg);
+        System.out.println("Encrypted : " + enc);
+        System.out.println("Decrypted : " + dec);
+    }
+}
+
+
+OUTPUT:
+
+Original  : CRYPTOGRAPHY
+Encrypted : FLNTVERTTXPE
+Decrypted : CRYPTOGRAPHY
