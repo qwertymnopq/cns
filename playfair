@@ -1,0 +1,60 @@
+public class PlayfairCipherSimple {
+    static char[][] key = {
+        {'M','O','N','A','R'},
+        {'C','H','Y','B','D'},
+        {'E','F','G','I','K'},
+        {'L','P','Q','S','T'},
+        {'U','V','W','X','Z'}
+    };
+
+    static int[] pos(char c) {
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
+                if (key[i][j] == c) return new int[]{i, j};
+        return null;
+    }
+
+    static String process(String msg, boolean encrypt) {
+        msg = msg.toUpperCase().replace("J", "I");
+        if (msg.length() % 2 != 0) msg += "X";
+
+        String result = "";
+        int shift = encrypt ? 1 : -1;
+
+        for (int i = 0; i < msg.length(); i += 2) {
+            int[] p1 = pos(msg.charAt(i));
+            int[] p2 = pos(msg.charAt(i + 1));
+
+            if (p1[0] == p2[0]) {
+                result += key[p1[0]][(p1[1] + shift + 5) % 5];
+                result += key[p2[0]][(p2[1] + shift + 5) % 5];
+            } else if (p1[1] == p2[1]) {
+                result += key[(p1[0] + shift + 5) % 5][p1[1]];
+                result += key[(p2[0] + shift + 5) % 5][p2[1]];
+            } else {
+                result += key[p1[0]][p2[1]];
+                result += key[p2[0]][p1[1]];
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String keyword = "MONARCHY";
+        String msg = "INSTRUMENT";
+        String enc = process(msg, true);
+        String dec = process(enc, false);
+        
+        System.out.println("Keyword   : " + keyword);
+        System.out.println("Original  : " + msg);
+        System.out.println("Encrypted : " + enc);
+        System.out.println("Decrypted : " + dec);
+    }
+}
+
+
+OUTPUT:
+Keyword   : MONARCHY
+Original  : INSTRUMENT
+Encrypted : GATLMZCLRQ
+Decrypted : INSTRUMENT
