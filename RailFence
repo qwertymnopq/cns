@@ -1,0 +1,38 @@
+import java.util.*;
+public class RailFence {
+    static String encrypt(String msg) {
+        String rail1 = "", rail2 = "";
+        for (int i = 0; i < msg.length(); i++)
+            if (i % 2 == 0) rail1 += msg.charAt(i);
+            else rail2 += msg.charAt(i);
+        return rail1 + rail2;
+    }
+
+    static String decrypt(String cipher) {
+        int mid = (cipher.length() + 1) / 2;
+        String rail1 = cipher.substring(0, mid);
+        String rail2 = cipher.substring(mid);
+        String res = "";
+        for (int i = 0; i < mid; i++) {
+            res += rail1.charAt(i);
+            if (i < rail2.length()) res += rail2.charAt(i);
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter message: ");
+        String msg = sc.nextLine();
+        String enc = encrypt(msg);
+        String dec = decrypt(enc);
+        System.out.println("Encrypted: " + enc);
+        System.out.println("Decrypted: " + dec);
+    }
+}
+
+OUTPUT:
+
+Enter message: SECURITY
+Encrypted: SCRTEUIY
+Decrypted: SECURITY
