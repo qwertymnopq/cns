@@ -1,0 +1,44 @@
+import java.security.*;
+import javax.crypto.*;
+import java.util.*;
+
+public class SimpleRSA {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+
+        // Input text
+        System.out.print("Enter text to encrypt: ");
+        String text = sc.nextLine();
+
+        // Generate RSA key pair (2048-bit)
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(1024);
+        KeyPair keyPair = keyGen.generateKeyPair();
+
+        // Create RSA cipher
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+
+        // Encryption with public key
+        cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
+        byte[] encry = cipher.doFinal(text.getBytes());
+        String encText = Base64.getEncoder().encodeToString(encry);
+        
+        cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+        String decText = new String(cipher.doFinal(encry));
+        
+        System.out.println("Original    : " + text);
+        System.out.println("Encrypted   : " + encText);
+        System.out.println("Decrypted   : " + decText);
+        
+        
+        sc.close();
+    }
+}
+
+
+OUTPUT:
+
+Enter text to encrypt: HelloWorld
+Original    : HelloWorld
+Encrypted   : Kf4b3V3RmQL5RqsKM+4NqeUjykO6mp7qAC0vBMK8DKnFpJjMB1Qp+vNsYokMTYHfy1Jf/7+AQiCNEn01LbcJYiy7VKXGYIPbgdpQYfxkty2PESN9o0i2yGr5nIGvfQEGP5PDfW8S8Uk7p/6OQH7EOgba1XhIRsUiwkZa+xwmVT4=
+Decrypted   : HelloWorld
